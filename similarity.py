@@ -7,7 +7,7 @@ import cv2
 def similar_region(image, template):
     result = cv2.matchTemplate(image, template, cv2.TM_CCOEFF)
     (_, maxVal, _, maxLoc) = cv2.minMaxLoc(result)
-    return maxVal, maxLoc
+    return maxVal, maxLoc, result
 
 
 def similarity(image, template_image, minimum_zoom, maximum_zoom,
@@ -18,6 +18,7 @@ def similarity(image, template_image, minimum_zoom, maximum_zoom,
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     (tH, tW) = template_gray.shape[:2]
 
+    result = None
     # loop over the scales of the image
     for scale in np.linspace(minimum_zoom, maximum_zoom, steps_zoom_counts):
         # resize the image according to the scale, and keep track
@@ -28,7 +29,7 @@ def similarity(image, template_image, minimum_zoom, maximum_zoom,
         if not_update_count > maximum_not_update:
             break
 
-        maxVal, maxLoc = similar_region(resized, template_gray)
+        maxVal, maxLoc, result_similar = similar_region(resized, template_gray)
 
         # check to see if the iteration should be visualized
         if debug:
@@ -47,6 +48,7 @@ def similarity(image, template_image, minimum_zoom, maximum_zoom,
         if found is None or maxVal > found[0]:
             not_update_count = 0
             found = (maxVal, maxLoc, r)
+            result = result_similar
             if debug:
                 print("found:{}".format(found))
 
@@ -54,4 +56,17 @@ def similarity(image, template_image, minimum_zoom, maximum_zoom,
     (startX, startY) = (int(maxLoc[0] / r), int(maxLoc[1] / r))
     (endX, endY) = (int((maxLoc[0] + tW) / r), int((maxLoc[1] + tH) / r))
 
+    if debug:
+        (minVal, maxVal, _, _) = cv2.minMaxLoc(result)
+        result[maxLoc[1]:maxLoc[1] + tH, maxLoc[0]:maxLoc[0] + tW] = maxVal
+        result = imutils.resize(result, width=int(result.shape[1] / r))
+        heatmapshow = None
+        heatmapshow = cv2.normalize(result, heatmapshow, alpha=0, beta=255,
+                                    norm_type=cv2.NORM_MINMAX,
+                                    dtype=cv2.CV_8U)
+        heatmapshow = cv2.applyColorMap(heatmapshow, cv2.COLORMAP_JET)
+        cv2.namedWindow('heatmapshow', cv2.WINDOW_NORMAL)
+        cv2.imshow("heatmapshow", heatmapshow)
+
     return (startX, startY), (endX, endY)
+

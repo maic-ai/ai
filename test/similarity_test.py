@@ -16,7 +16,7 @@ class TestSimilarityMethods(unittest.TestCase):
         test_image = cv2.imread('test_image.jpg')
         query_test_image = cv2.imread('query_test_image.png')
 
-        maxVal, maxLoc = similarity.similar_region(test_image, query_test_image)
+        maxVal, maxLoc, _ = similarity.similar_region(test_image, query_test_image)
 
         self.assertEqual(maxVal, TEST_MAXVAL)
         self.assertEqual(maxLoc, TEST_MAXLOC)
@@ -41,3 +41,4 @@ class TestSimilarityMethods(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
