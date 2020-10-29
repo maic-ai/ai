@@ -1,7 +1,7 @@
 # import the necessary packages
 import unittest
 import cv2
-import similarity
+from utilities import similarity
 
 
 TEST_MAXVAL = 16406257.0
@@ -13,8 +13,8 @@ TEST_P2 = (681, 515)
 class TestSimilarityMethods(unittest.TestCase):
 
     def test_similar_region(self):
-        test_image = cv2.imread('test_image.jpg')
-        query_test_image = cv2.imread('query_test_image.png')
+        test_image = cv2.imread('test/test_image.jpg')
+        query_test_image = cv2.imread('test/query_test_image.png')
 
         maxVal, maxLoc, _ = similarity.similar_region(test_image, query_test_image)
 
@@ -22,8 +22,8 @@ class TestSimilarityMethods(unittest.TestCase):
         self.assertEqual(maxLoc, TEST_MAXLOC)
 
     def test_similarity(self):
-        test_image = cv2.imread('test_image.jpg')
-        query_test_image = cv2.imread('query_test_image2.png')
+        test_image = cv2.imread('test/test_image.jpg')
+        query_test_image = cv2.imread('test/query_test_image2.png')
 
         minimum_zoom = 6
         maximum_zoom = 6

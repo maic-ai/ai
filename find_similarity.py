@@ -1,7 +1,7 @@
 # import the necessary packages
 import argparse
 import cv2
-import similarity
+from utilities import similarity
 
 
 def main():

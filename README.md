@@ -9,7 +9,8 @@ numpy <br />
 imutils <br />
 
 ## Usage
-python find_similarity.py --template images/image-2.png --image images/200525170429-amsterdam-crowds.jpg --debug True <br />
+python find_similarity.py --template images/query_image-1.png --image images/200525170429-amsterdam-crowds.jpg --debug True <br />
 
 ## Usage
-python similarity_test.py <br />
+export PYTHONPATH=$PWD
+python test/similarity_test.py <br />
