@@ -12,5 +12,5 @@ imutils <br />
 python find_similarity.py --template images/query_image-1.png --image images/200525170429-amsterdam-crowds.jpg --debug True <br />
 
 ## Usage
-export PYTHONPATH=$PWD
+export PYTHONPATH=$PWD <br />
 python test/similarity_test.py <br />
